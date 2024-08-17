@@ -10,6 +10,7 @@ const ProductsContainer = ({product}) => {
   <div className="card-body">
     <h2 className="card-title">{product.name}</h2>
     <h3 className="text-lg">{product.description}</h3>
+    <p><span className="font-bold">Brand Name:</span> {product.brand}</p>
     <p><span className="font-bold">Categories:</span> {product.category}</p>
     <p><span className="font-bold">Price:</span> {product.price}</p>
     <p><span className="font-bold">Rating:</span> {product.ratings}</p>

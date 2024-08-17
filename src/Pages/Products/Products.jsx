@@ -12,7 +12,8 @@ const Products = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [numberOfPage,setNumberofPage] = useState(0)
     const [totalCount , setTotalCount] = useState(0)
-
+    const [totalCategory, setTotalCategory] = useState([]);
+    const [totalBrand, setTotalBrand] = useState([]);
     
     
 
@@ -39,13 +40,33 @@ const Products = () => {
         }
     })
 
+    const {data:filterName, isLoading:isFilterNameLoading, refetch:reload} = useQuery({
+        queryKey:['filterName'],
+        queryFn: async()=>{
+            const res = await axios.get('http://localhost:5000/filterOption')
+            return res.data;
+        }
+    })
+
+    // console.log('the name',filterName)
+
+    //filtering the total category name, brand name list;
+    useEffect(()=>{
+        const uniqueCategories = [...new Set(filterName.map(product => product.category))];
+        setTotalCategory(uniqueCategories);
+      //filtering the brand name
+        const uniqueBrands = [...new Set(filterName.map(product => product.brand))]
+        setTotalBrand(uniqueBrands);
+
+    },[filterName])
+
     useEffect(()=>{
         const numberOfPages = Math.ceil(totalCount.count / 10);
         setNumberofPage(numberOfPages);
         // console.log(numberOfPages)
     },[totalCount.count])
 
-     if(isLoading){
+     if(isLoading || isFilterNameLoading){
         return <div>Loading</div>
      }
      
@@ -78,6 +99,49 @@ const Products = () => {
     return (
         <div>
             <Hero></Hero>
+
+            <form className="flex flex-col md:flex-row gap-3">
+    <div className="flex">
+        <input type="text" placeholder="Search for the tool you like"
+			className="w-full md:w-80 px-3 h-10 rounded-l border-2 border-sky-500 focus:outline-none focus:border-sky-500"
+			/>
+        <button type="submit" className="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Search</button>
+    </div>
+    <select id="category" name="category"
+		className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+		{/* <option value="All" selected="">All</option>
+		<option value="Freemium">Freemium</option>
+		<option value="Free">Free</option>
+		<option value="Paid">Paid</option> */}
+        {
+            totalCategory.map(category => <option value={category}>{category}</option>)
+        }
+	</select>
+
+    {/**  brand name select   */}
+    <select id="brand" name="brand"
+		className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+		{/* <option value="All" selected="">All</option>
+		<option value="Freemium">Freemium</option>
+		<option value="Free">Free</option>
+		<option value="Paid">Paid</option> */}
+        {
+            totalBrand.map(brand => <option value={brand}>{brand}</option>)
+        }
+	</select>
+
+    {/**  sort name select  */}
+
+    <select id="sort" name="sort"
+		className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+		
+		<option value="High to Low">High to Low</option>
+		<option value="High to Low">Low to High</option>
+       
+	</select>
+
+</form>
+
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-[100px]">
             {
                 availableProducts.map(product =><ProductsContainer product={product} key={product.id}></ProductsContainer>)
