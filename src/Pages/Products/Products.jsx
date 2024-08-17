@@ -37,37 +37,36 @@ const Products = () => {
         }
     });
 
-    console.log(filterName)
+    // console.log(filterName)
 
     const { data: availableProducts, isLoading, refetch } = useQuery({
         queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/allProducts`, {
-                params: {
-                    page: currentPage,
-                    size: itemsParPage,
-                    brand: brandName,
-                    search: searchName,
-                    priceRange: priceRange,
-                    sort: sortPrice,
-                    category: categoryName
-                }
-            });
+            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
             return res.data;
         }
     });
 
     // Handle filtering form submission
-    const handleFilter = e => {
+    // const handleFilter = e => {
+    //     e.preventDefault();
+    //     setSearchName(e.target[0].value);
+    //     setCategoryName(e.target.category.value);
+    //     setBrandName(e.target.brand.value);
+    //     setPriceRange(e.target.range.value);
+    //     setSortPrice(e.target.sort.value);
+    //     refetch();
+        
+    // }
+
+    //search box function
+    const handleSearch = e =>{
         e.preventDefault();
-        setSearchName(e.target[0].value);
-        setCategoryName(e.target.category.value);
-        setBrandName(e.target.brand.value);
-        setPriceRange(e.target.range.value);
-        setSortPrice(e.target.sort.value);
-        refetch();
+        setSearchName(e.target[0].value)
     }
 
+ 
+    // console.log(categoryName)
    
 
     // Populate categories and brands for filtering options
@@ -112,36 +111,46 @@ const Products = () => {
         <div>
             <Hero />
 
-            <form onSubmit={handleFilter} className="flex flex-col md:flex-row gap-3">
+
+            <div className="flex flex-col md:flex-row gap-3">
+                  
+
+            <form onSubmit={handleSearch} >
                 <div className="flex">
                     <input type="text" placeholder="Search for the tool you like"
                         className="w-full md:w-80 px-3 h-10 rounded-l border-2 border-sky-500 focus:outline-none focus:border-sky-500"
                     />
                     <button type="submit" className="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Search</button>
                 </div>
-                <select id="category" name="category"
+               
+            </form>
+
+            <select onChange={(e) => setCategoryName(e.target.value)}  id="category" name="category"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
                     {totalCategory.map(category => <option key={category} value={category}>{category}</option>)}
                 </select>
 
-                <select id="brand" name="brand"
+                <select onChange={(e)=> setBrandName(e.target.value)} id="brand" name="brand"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
                     {totalBrand.map(brand => <option key={brand} value={brand}>{brand}</option>)}
                 </select>
 
-                <select id="range" name="range"
+                <select onChange={(e)=>setPriceRange(e.target.value)} id="range" name="range"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
-                    <option value="Low Price">Low Price</option>
-                    <option value="Mid Price">Mid Price</option>
-                    <option value="High Price">High Price</option>
+                    <option value="Low">Low Price</option>
+                    <option value="Mid">Mid Price</option>
+                    <option value="High">High Price</option>
                 </select>
 
-                <select id="sort" name="sort"
+                <select onChange={(e)=>setSortPrice(e.target.value)} id="sort" name="sort"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
-                    <option value="High to Low">High to Low</option>
-                    <option value="Low to High">Low to High</option>
+                    <option value="HighToLow">High to Low</option>
+                    <option value="LowToHigh">Low to High</option>
                 </select>
-            </form>
+
+            </div>
+
+            
 
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-[100px]">
                 {availableProducts.map(product => (
