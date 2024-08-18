@@ -13,6 +13,7 @@ import App from './App';
 import AuthProvider from './provider/AuthProvider';
 import Register from './Pages/Register/Register';
 import Products from './Pages/Products/Products';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {
   useQuery,
   useMutation,
@@ -53,7 +54,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
     <AuthProvider>
+     <HelmetProvider>
      <RouterProvider router={router} />
+     </HelmetProvider>
      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,

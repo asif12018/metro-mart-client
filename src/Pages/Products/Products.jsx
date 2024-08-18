@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ProductsContainer from "../../components/ProductsContainer/ProductsContainer";
 import { Audio, Hourglass } from 'react-loader-spinner';
+import { Helmet } from 'react-helmet-async';
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [itemsParPage, setItemsPerPage] = useState(10);
@@ -146,6 +147,9 @@ const Products = () => {
 
     return (
         <div>
+            <Helmet>
+                <title>Products</title>
+            </Helmet>
             <Hero />
 
 

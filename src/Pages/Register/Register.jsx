@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Audio, Hourglass } from 'react-loader-spinner';
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const {setUser, userSignIn, googleSignIn, user, userCreate} = useContext(AuthContext)
@@ -66,6 +67,9 @@ const Register = () => {
   }
     return (
         <div className="bg-gray-50 font-[sans-serif]">
+          <Helmet>
+                <title>Register</title>
+            </Helmet>
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
           <div className="max-w-md w-full">
             {/* <a href="javascript:void(0)"><img
