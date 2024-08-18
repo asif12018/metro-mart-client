@@ -8,7 +8,7 @@ const CardOverView = () => {
     const {data:product, isLoading, refetch} = useQuery({
         queryKey:['product'],
         queryFn: async() =>{
-            const res = await axios.get('http://localhost:5000/filterOption')
+            const res = await axios.get('https://metro-mart-server.vercel.app/filterOption')
             return res.data
         }
     })

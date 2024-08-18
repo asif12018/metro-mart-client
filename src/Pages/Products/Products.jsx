@@ -26,7 +26,7 @@ const Products = () => {
     }
 
     useEffect(() => {
-        fetch('http://localhost:5000/productsCount')
+        fetch('https://metro-mart-server.vercel.app/productsCount')
         .then(res => res.json())
         .then(data => setTotalCount(data));
     }, []);
@@ -34,7 +34,7 @@ const Products = () => {
     const { data: filterName, isLoading: isFilterNameLoading, refetch: reload } = useQuery({
         queryKey: ['filterName'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:5000/filterOption');
+            const res = await axios.get('https://metro-mart-server.vercel.app/filterOption');
             return res.data;
         }
     });
@@ -46,8 +46,8 @@ const Products = () => {
     const { data: availableProducts, isLoading, refetch } = useQuery({
         queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName, sortDate],
         queryFn: async () => {
-            // const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
-            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brandName=${brandName}&searchName=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&categoryName=${categoryName}&sortDate=${sortDate}`);
+            // const res = await axios.get(`https://metro-mart-server.vercel.app/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
+            const res = await axios.get(`https://metro-mart-server.vercel.app/allProducts?page=${currentPage}&size=${itemsParPage}&brandName=${brandName}&searchName=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&categoryName=${categoryName}&sortDate=${sortDate}`);
             return res.data;
         }
     });
@@ -65,7 +65,7 @@ const Products = () => {
     //             setTotalCount(availableProducts?.length);
     //         } else {
     //             // Fetch the total count of all products when there are no filters
-    //             fetch('http://localhost:5000/productsCount')
+    //             fetch('https://metro-mart-server.vercel.app/productsCount')
     //             .then(res => res.json())
     //             .then(data => setTotalCount(data));
     //         }
