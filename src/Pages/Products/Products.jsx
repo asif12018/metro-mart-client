@@ -39,6 +39,8 @@ const Products = () => {
 
     // console.log(filterName)
 
+   
+
     const { data: availableProducts, isLoading, refetch } = useQuery({
         queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName],
         queryFn: async () => {
@@ -47,6 +49,13 @@ const Products = () => {
             return res.data;
         }
     });
+
+     //resetting total count based on the filter
+     useEffect(()=>{
+        if((!isLoading && (totalBrand || searchName || brandName || priceRange || categoryName || sortPrice))){
+            setTotalCount(availableProducts?.length)
+        }
+     },[totalBrand, searchName, brandName, priceRange, categoryName, sortPrice, availableProducts?.length, isLoading])
 
     // Handle filtering form submission
     // const handleFilter = e => {
@@ -127,18 +136,25 @@ const Products = () => {
                
             </form>
 
-            <select onChange={(e) => setCategoryName(e.target.value)}  id="category" name="category"
+            <select onChange={(e) => {
+                setCategoryName('');
+                setCategoryName(e.target.value)
+                
+            }}  id="category" name="category"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+                        <option value={''}>Select Category</option>
                     {totalCategory.map(category => <option key={category} value={category}>{category}</option>)}
                 </select>
 
                 <select onChange={(e)=> setBrandName(e.target.value)} id="brand" name="brand"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+                        <option value={''}>Select Brand</option>
                     {totalBrand.map(brand => <option key={brand} value={brand}>{brand}</option>)}
                 </select>
 
                 <select onChange={(e)=>setPriceRange(e.target.value)} id="range" name="range"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+                    <option value="">Select price Range</option>
                     <option value="Low">Low Price</option>
                     <option value="Mid">Mid Price</option>
                     <option value="High">High Price</option>
@@ -146,6 +162,7 @@ const Products = () => {
 
                 <select onChange={(e)=>setSortPrice(e.target.value)} id="sort" name="sort"
                     className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+                    <option value="">sort by price</option>
                     <option value="HighToLow">High to Low</option>
                     <option value="LowToHigh">Low to High</option>
                 </select>
