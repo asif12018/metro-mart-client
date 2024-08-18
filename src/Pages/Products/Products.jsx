@@ -3,7 +3,7 @@ import Hero from "../../components/Hero/Hero";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import ProductsContainer from "../../components/ProductsContainer/ProductsContainer";
-
+import { Audio, Hourglass } from 'react-loader-spinner';
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [itemsParPage, setItemsPerPage] = useState(10);
@@ -109,7 +109,17 @@ const Products = () => {
     }, [totalCount.count]);
 
     if (isLoading || isFilterNameLoading) {
-        return <div>Loading...</div>;
+        return <div className="h-screen w-screen flex justify-center items-center">
+            <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+        />
+        </div>;
     }
 
   

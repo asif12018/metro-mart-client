@@ -2,10 +2,14 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from './../../provider/AuthProvider';
 import Swal from "sweetalert2";
+import { FaGoogle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { Audio, Hourglass } from 'react-loader-spinner';
 
 const Login = () => {
   const {setUser, userSignIn, googleSignIn} = useContext(AuthContext)
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const navigate = useNavigate();
   const onSubmit = data => {
     userSignIn(data.email, data.password)
     .then((userCredential) => {
@@ -20,6 +24,9 @@ const Login = () => {
         showConfirmButton: false,
         timer: 1500
       });
+      setTimeout(()=>{
+        navigate('/')
+      },[2000])
       // ...
     })
     .catch((error) => {
@@ -27,6 +34,36 @@ const Login = () => {
       const errorMessage = error.message;
     });
   };
+
+    //google signin
+    const handleGoogleSignIn = () =>{
+      googleSignIn()
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        
+        const user = result.user;
+        console.log(user);
+        setUser(user);
+        Swal.fire({
+          position: "middle-middle",
+          icon: "success",
+          title: "register success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+        setTimeout(()=>{
+          navigate('/')
+        },[2000])
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        // ...
+      });
+    }
     return (
         <div className="bg-gray-50 font-[sans-serif]">
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
@@ -80,6 +117,12 @@ const Login = () => {
                 <div className="!mt-8">
                   <button type="submit" className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
                     Sign in
+                  </button>
+                </div>
+
+                <div className="!mt-8">
+                  <button onClick={handleGoogleSignIn}  className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none">
+                     <span className="flex justify-center items-center gap-3"> Continue with google <FaGoogle /></span>
                   </button>
                 </div>
                 <p className="text-gray-800 text-sm !mt-8 text-center">Don't have an account? <a href="javascript:void(0);" class="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold">Register here</a></p>
