@@ -42,7 +42,8 @@ const Products = () => {
     const { data: availableProducts, isLoading, refetch } = useQuery({
         queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName],
         queryFn: async () => {
-            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
+            // const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
+            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brandName=${brandName}&searchName=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&categoryName=${categoryName}`);
             return res.data;
         }
     });
@@ -63,6 +64,7 @@ const Products = () => {
     const handleSearch = e =>{
         e.preventDefault();
         setSearchName(e.target[0].value)
+        refetch();
     }
 
  
