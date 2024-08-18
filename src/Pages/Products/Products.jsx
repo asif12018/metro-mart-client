@@ -17,6 +17,7 @@ const Products = () => {
     const [priceRange, setPriceRange] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [sortPrice, setSortPrice] = useState('');
+    const [sortDate, setSortDate] = useState('');
 
     const pages = [];
     for(let i = 0; i < numberOfPage; i++) {
@@ -42,20 +43,33 @@ const Products = () => {
    
 
     const { data: availableProducts, isLoading, refetch } = useQuery({
-        queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName],
+        queryKey: ['availableProducts', currentPage, itemsParPage, brandName, searchName, priceRange, sortPrice, categoryName, sortDate],
         queryFn: async () => {
             // const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brand=${brandName}&search=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&category=${categoryName}`);
-            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brandName=${brandName}&searchName=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&categoryName=${categoryName}`);
+            const res = await axios.get(`http://localhost:5000/allProducts?page=${currentPage}&size=${itemsParPage}&brandName=${brandName}&searchName=${searchName}&priceRange=${priceRange}&sortPrice=${sortPrice}&categoryName=${categoryName}&sortDate=${sortDate}`);
             return res.data;
         }
     });
 
      //resetting total count based on the filter
-     useEffect(()=>{
-        if((!isLoading && (totalBrand || searchName || brandName || priceRange || categoryName || sortPrice))){
-            setTotalCount(availableProducts?.length)
-        }
-     },[totalBrand, searchName, brandName, priceRange, categoryName, sortPrice, availableProducts?.length, isLoading])
+    //  useEffect(()=>{
+    //     if((!isLoading && (totalBrand.length > 0 || searchName.length > 0 || brandName.length > 0 || priceRange.length > 0 || categoryName.length > 0 || sortPrice.length > 0 ))){
+    //         setTotalCount(availableProducts?.length)
+    //     }
+    //  },[totalBrand, searchName, brandName, priceRange, categoryName, sortPrice, availableProducts?.length, isLoading])
+    // useEffect(() => {
+    //     if (!isLoading) {
+    //         const hasFilter = searchName || brandName || priceRange || categoryName || sortPrice;
+    //         if (hasFilter) {
+    //             setTotalCount(availableProducts?.length);
+    //         } else {
+    //             // Fetch the total count of all products when there are no filters
+    //             fetch('http://localhost:5000/productsCount')
+    //             .then(res => res.json())
+    //             .then(data => setTotalCount(data));
+    //         }
+    //     }
+    // }, [searchName, brandName, priceRange, categoryName, sortPrice, availableProducts?.length, isLoading]);
 
     // Handle filtering form submission
     // const handleFilter = e => {
@@ -97,6 +111,8 @@ const Products = () => {
     if (isLoading || isFilterNameLoading) {
         return <div>Loading...</div>;
     }
+
+  
 
     const getCurrentPage = e => {
         setCurrentPage(parseInt(e.target.innerText));
@@ -165,6 +181,12 @@ const Products = () => {
                     <option value="">sort by price</option>
                     <option value="HighToLow">High to Low</option>
                     <option value="LowToHigh">Low to High</option>
+                </select>
+                <select onChange={(e)=>setSortDate(e.target.value)} id="sort" name="sort"
+                    className="w-full h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+                    <option value="">sort by Date</option>
+                    <option value="new">Newest to Oldest</option>
+                    <option value="old">Oldest to Newest</option>
                 </select>
 
             </div>

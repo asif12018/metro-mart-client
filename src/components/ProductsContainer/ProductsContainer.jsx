@@ -14,6 +14,7 @@ const ProductsContainer = ({product}) => {
     <p><span className="font-bold">Categories:</span> {product.category}</p>
     <p><span className="font-bold">Price:</span> {product.price}</p>
     <p><span className="font-bold">Rating:</span> {product.ratings}</p>
+    <p><span className="font-bold">Added Date:</span> {product.created_at}</p>
     <div className="card-actions justify-end">
       <button className="btn btn-primary">Buy Now</button>
     </div>
