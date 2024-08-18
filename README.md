@@ -1,8 +1,46 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Project Title
 
-Currently, two official plugins are available:
+Metro-mart: this is a website where you can search product. filter by category, or sort it out by price range, date etc.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+
+
+## Features
+
+- Responsive website for all device
+- Live previews
+- Fullscreen mode
+- Cross platform
+- search or filter out the product
+- firebase to secure user data
+
+
+## Teachnolgy Used:
+- React
+- firebase
+- express
+- node.js
+- tanstack query
+- axios
+- react form hook
+
+
+
+
+
+
+## Demo
+
+live site: https://metro-mart.netlify.app/
+
+to install this or run it on locally:
+
+1. first you have to copy or download the file for both frontend and backend
+
+2. npm install
+
+
+
+
+
